@@ -12,7 +12,6 @@
 - Castro Salazar Jesús Alejandro
 - Félix Avilés Jonathan Josué
 - Félix Colores Marco Antonio
-- López Germán Abel Martín
 - Quintero Román Miguel Ángel
 - Rocha Ibarra Ángel David
 
