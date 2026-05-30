@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Antique Café - Inicio</title>
+    <link rel="stylesheet" href="/public/css/styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="divider"></div>
+
+        <div id="logo-panel" class="panel logo-panel order-right">
+            <img src="/imgs/logocafeteria.png" alt="Antique Café Logo">
+        </div>
+
+        <div id="login-panel" class="panel form-panel order-left">
+            <h2>Iniciar Sesión</h2>
+            <form id="login-form" action="/api/login" method="POST">
+                <div class="form-group">
+                    <label for="login-email">Correo Electronico</label>
+                    <input type="email" id="login-email" name="correo" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Contraseña</label>
+                    <input type="password" id="login-password" name="password" required>
+                </div>
+                <a class="action-link" onclick="toggleView('register')">Registrarse</a>
+                <button type="submit" class="btn-submit">Ingresar</button>
+            </form>
+        </div>
+
+        <div id="register-panel" class="panel form-panel hidden order-right">
+            <h2>Registrarse</h2>
+            <form id="register-form" action="/api/registro" method="POST">
+                <div class="form-group">
+                    <label for="reg-nombre">Nombre</label>
+                    <input type="text" id="reg-nombre" name="nombre" required>
+                </div>
+                <div class="form-group">
+                    <label for="reg-telefono">Telefono</label>
+                    <input type="text" id="reg-telefono" name="telefono" required>
+                </div>
+                <div class="form-group">
+                    <label for="reg-email">Correo Electronico</label>
+                    <input type="email" id="reg-email" name="correo" required>
+                </div>
+                <div class="form-group">
+                    <label for="reg-password">Contraseña</label>
+                    <input type="password" id="reg-password" name="password" required>
+                </div>
+                <a class="action-link" onclick="toggleView('login')">Iniciar Sesión</a>
+                <button type="submit" class="btn-submit">Ingresar</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function toggleView(view) {
+            const loginPanel = document.getElementById('login-panel');
+            const registerPanel = document.getElementById('register-panel');
+            const logoPanel = document.getElementById('logo-panel');
+
+            if (view === 'register') {
+                // Show register, hide login
+                loginPanel.classList.add('hidden');
+                registerPanel.classList.remove('hidden');
+
+                // Move logo to the left (order 1), register to the right (order 2)
+                logoPanel.classList.remove('order-right');
+                logoPanel.classList.add('order-left');
+                registerPanel.classList.remove('order-left');
+                registerPanel.classList.add('order-right');
+            } else {
+                // Show login, hide register
+                registerPanel.classList.add('hidden');
+                loginPanel.classList.remove('hidden');
+
+                // Move logo to the right (order 2), login to the left (order 1)
+                logoPanel.classList.remove('order-left');
+                logoPanel.classList.add('order-right');
+                loginPanel.classList.remove('order-right');
+                loginPanel.classList.add('order-left');
+            }
+        }
+    </script>
+</body>
+
+</html>
