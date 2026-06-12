@@ -64,21 +64,20 @@
             const logoPanel = document.getElementById('logo-panel');
 
             if (view === 'register') {
-                // Show register, hide login
+
                 loginPanel.classList.add('hidden');
                 registerPanel.classList.remove('hidden');
 
-                // Move logo to the left (order 1), register to the right (order 2)
                 logoPanel.classList.remove('order-right');
                 logoPanel.classList.add('order-left');
                 registerPanel.classList.remove('order-left');
                 registerPanel.classList.add('order-right');
             } else {
-                // Show login, hide register
+
                 registerPanel.classList.add('hidden');
                 loginPanel.classList.remove('hidden');
 
-                // Move logo to the right (order 2), login to the left (order 1)
+
                 logoPanel.classList.remove('order-left');
                 logoPanel.classList.add('order-right');
                 loginPanel.classList.remove('order-right');

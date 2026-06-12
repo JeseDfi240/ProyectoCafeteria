@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cafetería Ibarra - Menú Principal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="nav-left">
+            <img src="/imgs/logocafeteria.png" alt="Cafetería Ibarra" class="logo">
+            <span class="brand-name">CAFETERIA IBARRA</span>
+        </div>
+        
+        <div class="nav-right">
+            <nav class="nav-links">
+                <a href="#" class="active">INICIO</a>
+                <a href="#" id="btn-menu">MENU</a>
+            </nav>
+            
+            <div class="social-icons">
+                <a href="https://instagram.com" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+                <a href="https://facebook.com" target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="https://x.com" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
+            </div>
+
+            <div class="cart-container">
+                <button id="btn-cart" class="icon-btn">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span id="cart-count">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <section id="welcome-screen" class="welcome-section">
+            <h1>Bienvenido</h1>
+        </section>
+
+        <section id="menu-section" class="menu-section hidden">
+            <div class="categories-sidebar">
+                <button class="category-btn active" onclick="filterCategory('cafes')">CAFES</button>
+                <button class="category-btn" onclick="filterCategory('postres')">POSTRES</button>
+                <button class="category-btn" onclick="filterCategory('comidas')">COMIDAS</button>
+                <button class="category-btn" onclick="filterCategory('panes')">PANES</button>
+                <button class="category-btn" onclick="filterCategory('frappes')">FRAPPES</button>
+            </div>
+
+            <div class="products-grid" id="products-container">
+                </div>
+        </section>
+    </main>
+
+    <div id="cart-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Tu Carrito</h2>
+                <button id="close-cart" class="close-btn">&times;</button>
+            </div>
+            <div id="cart-items">
+                <p class="empty-cart-msg">El carrito está vacío.</p>
+            </div>
+            <div class="modal-footer">
+                <div class="cart-total">Total: $<span id="cart-total-val">0.00</span></div>
+                <button id="btn-checkout" class="btn-black">Proceder al Pago</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
