@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Antique Café - Inicio</title>
-    <link rel="stylesheet" href="/public/css/styles.css">
+    <link rel="stylesheet" href="public/css/styles.css">
 </head>
 
 <body>
@@ -13,12 +13,12 @@
         <div class="divider"></div>
 
         <div id="logo-panel" class="panel logo-panel order-right">
-            <img src="/imgs/logocafeteria.png" alt="Antique Café Logo">
+            <img src="imgs/logocafeteria.png" alt="Antique Café Logo">
         </div>
 
         <div id="login-panel" class="panel form-panel order-left">
             <h2>Iniciar Sesión</h2>
-            <form id="login-form" action="/api/login" method="POST">
+            <form id="login-form" action="api/login" method="POST">
                 <div class="form-group">
                     <label for="login-email">Correo Electronico</label>
                     <input type="email" id="login-email" name="correo" required>
@@ -34,7 +34,7 @@
 
         <div id="register-panel" class="panel form-panel hidden order-right">
             <h2>Registrarse</h2>
-            <form id="register-form" action="/api/registro" method="POST">
+            <form id="register-form" action="api/registro" method="POST">
                 <div class="form-group">
                     <label for="reg-nombre">Nombre</label>
                     <input type="text" id="reg-nombre" name="nombre" required>
