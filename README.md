@@ -1,90 +1,115 @@
-# Backend — Antique Cafe (PostgreSQL)
+# Documentación del Sistema – Cafetería Ibarra App
 
-Este servidor maneja **dos cosas** sobre la misma base de datos `antique_cafe`:
-1. Los **pedidos** del carrito de compras.
-2. El **inicio de sesión y registro** de usuarios (con contraseñas encriptadas).
+## Información del Producto
+* **Nombre del Producto:**  Antique Cafe
+* **Descripción:** Aplicación móvil y plataforma web para la gestión de pedidos a domicilio, catálogo digital, carrito de compras, autenticación de usuarios con contraseñas encriptadas e inventario para Cafetería Ibarra.
 
-## Por qué necesitas esto
+## Integrantes del Equipo
+* Acosta Elizalde Ian Jese
+* Castro Salazar Jesús Alejandro
+* Félix Avilés Jonathan Josué
+* Félix Colores Marco Antonio
+* Quintero Román Miguel Ángel
+* Rocha Ibarra Ángel David
 
-Una página HTML abierta en el navegador no puede hablar directo con PostgreSQL.
-Por eso existe este servidor intermedio: el navegador le manda los datos por
-internet (`fetch`) y el servidor los guarda en la base de datos.
+---
 
-```
-  Navegador  ──fetch──>  server.js (Node)  ──SQL──>  PostgreSQL
-```
+## 1. Introducción
 
-## Requisitos
+### Descripción general
+Cafetería Ibarra App es una solución tecnológica diseñada para modernizar el proceso de venta y atención al cliente. El sistema permite consultar el menú en tiempo real, realizar pedidos a domicilio, administrar métodos de pago, gestionar favoritos y consultar historiales de compra a través de una arquitectura cliente-servidor.
 
-1. Node.js (https://nodejs.org) — versión 18 o superior.
-2. PostgreSQL (https://www.postgresql.org/download/).
+### Audiencia
+* Clientes de Cafetería Ibarra
+* Administradores del negocio
+* Empleados encargados de ventas e inventario
+* Equipo de desarrollo y mantenimiento
 
-## Pasos de instalación
+### Alcance
+El sistema cubre el registro de usuarios, autenticación segura, catálogo de productos, carrito de compras, gestión de pedidos, métodos de pago, control de inventario, historial de compras y reportes administrativos.
 
-### 1. Crear la base de datos
-En "SQL Shell (psql)":
+---
+
+## 2. Resumen del Sistema
+
+### Objetivo General
+Desarrollar e implementar un sistema integral para optimizar los pedidos a domicilio, mejorar la experiencia del usuario e incrementar la competitividad de Cafetería Ibarra.
+
+### Arquitectura de Comunicación
+El frontend no interactúa directamente con la base de datos relacional. El servidor intermedio en Node.js recibe las peticiones HTTP desde la aplicación cliente mediante la API Fetch, procesa la lógica de negocio y realiza las consultas SQL en PostgreSQL.
+
+### Funcionalidades Principales
+* Catálogo dinámico de productos y búsqueda avanzada.
+* Registro e inicio de sesión seguro con contraseñas encriptadas.
+* Carrito de compras y gestión de pedidos.
+* Gestión de favoritos e historial de compras.
+* Soporte para múltiples métodos de pago (tarjeta y efectivo).
+* Módulos administrativos: gestión de inventario, clientes, empleados y generación de estadísticas.
+
+---
+
+## 3. Requisitos del Sistema
+
+### Requisitos de Software
+* Node.js (versión 18 o superior).
+* PostgreSQL como motor de base de datos relacional.
+
+### Requisitos Funcionales
+* Registro de usuarios y autenticación basada en Hash.
+* Consulta de menú e inventario en tiempo real.
+* Agregar, editar y eliminar productos del carrito.
+* Gestión de pedidos a domicilio.
+* Control de roles (Clientes, Empleados, Administradores).
+* Generación de reportes de ventas y rendimiento.
+
+### Requisitos No Funcionales
+* Interfaz intuitiva y de alto rendimiento.
+* Disponibilidad continua del servicio.
+* Seguridad de datos mediante encriptación.
+* Escalabilidad de la infraestructura de backend.
+
+---
+
+## 4. Módulos y Arquitectura del Sistema
+
+### Módulos Funcionales
+* **Gestión de Clientes:** Registro, historial, promociones y recompensas.
+* **Gestión de Empleados:** Control de productividad, horarios y desempeño.
+* **Gestión de Productos e Inventario:** Alta, baja, actualización y control de existencias.
+* **Gestión de Ventas:** Registro de transacciones, descuentos y generación de comprobantes.
+* **Gestión de Reportes:** Análisis de ventas, inventario y comportamiento de clientes.
+
+### Estructura de la Base de Datos
+Entidades principales del modelo relacional en la base de datos `antique_cafe`:
+* Usuarios (id, nombre, correo, password encriptada, creado_en)
+* Clientes y Empleados
+* Productos e Inventario
+* Pedidos y Pedido_Items
+* Métodos de Pago
+* Reportes
+
+---
+
+## 5. Casos de Uso y Seguridad
+
+### Casos de Uso Principales
+* Cliente realiza pedido y gestiona favoritos.
+* Cliente consulta historial de compras.
+* Administrador controla productos e inventario.
+* Empleado registra ventas en punto de acceso.
+* Administrador genera reportes de rendimiento.
+
+### Políticas de Seguridad
+* **Autenticación:** Las contraseñas se almacenan de forma segura en la base de datos utilizando algoritmos de encriptación hash (Bcrypt).
+* **Control de Acceso:** Restricción de rutas de la API y funciones de la interfaz basadas en roles de usuario.
+* **Protección de Datos:** Almacenamiento seguro de credenciales y métodos de pago.
+
+---
+
+## 6. Instrucciones de Instalación y Despliegue
+
+### 1. Inicialización de la Base de Datos
+Desde la consola interactiva de PostgreSQL (psql), ejecute el siguiente comando para crear la base de datos:
 
 ```sql
 CREATE DATABASE antique_cafe;
-```
-
-### 2. Cargar las tablas (incluye usuarios, pedidos y pedido_items)
-Desde la carpeta backend, en una terminal:
-
-```bash
-psql -U postgres -d antique_cafe -f schema.sql
-```
-
-### 3. Configurar la conexión
-Abre `server.js` y cambia la contraseña en el bloque `new Pool({...})` por la
-tuya de PostgreSQL. Por defecto usa usuario `postgres` y base `antique_cafe`.
-
-### 4. Instalar dependencias y arrancar
-Dentro de la carpeta backend:
-
-```bash
-npm install
-npm start
-```
-
-```
- Conectado a PostgreSQL
- Servidor escuchando en http://localhost:3000
-```
-
-> Nota: `npm install` compila el paquete `bcrypt` (usado para encriptar
-> contraseñas). Necesita tener instaladas las herramientas de compilación de
-> tu sistema. En Windows normalmente funciona directo; si diera error, instala
-> "Visual Studio Build Tools" o cambia `bcrypt` por `bcryptjs` en package.json
-> y en server.js (bcryptjs no requiere compilación).
-
-### 5. Usar el sitio
-- Carrito: abre `Antique Cafe.html`, agrega productos y pulsa "Realizar pedido".
-- Login: pulsa "Iniciar sesión" en la barra de navegación, o abre
-  `iniciar-sesion.html`. Puedes registrarte y luego iniciar sesión.
-
-Para ver los datos guardados en PostgreSQL:
-```sql
-SELECT id, nombre, correo, creado_en FROM usuarios;
-SELECT * FROM vista_pedidos;
-```
-(La columna password se ve como un hash largo: así debe ser, está encriptada.)
-
-## Rutas de la API
-
-| Método | Ruta              | Para qué sirve                  |
-|--------|-------------------|---------------------------------|
-| POST   | /api/registro     | Crear una cuenta nueva          |
-| POST   | /api/login        | Iniciar sesión                  |
-| POST   | /api/pedidos      | Registrar un pedido             |
-| GET    | /api/pedidos      | Listar todos los pedidos        |
-| GET    | /api/pedidos/:id  | Ver el detalle de un pedido     |
-
-## Nota sobre el puerto
-El frontend apunta a `http://localhost:3000`. Si cambias el puerto del servidor,
-actualiza la constante `API_URL` al inicio de `carrito.js` y de `iniciar-sesion.html`.
-
----
-El inicio de sesión se basó en el proyecto de
-https://github.com/JeseDfi240/ProyectoCafeteria adaptado a la base de datos y
-el estilo de Antique Cafe.
