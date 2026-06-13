@@ -1,152 +1,90 @@
-# Documentación del Sistema – Cafetería Ibarra
+# Backend — Antique Cafe (PostgreSQL)
 
-## Información del Producto
+Este servidor maneja **dos cosas** sobre la misma base de datos `antique_cafe`:
+1. Los **pedidos** del carrito de compras.
+2. El **inicio de sesión y registro** de usuarios (con contraseñas encriptadas).
 
-**Nombre del Producto:** Cafetería Ibarra App
+## Por qué necesitas esto
 
-**Descripción:** Aplicación móvil para la gestión de pedidos a domicilio, catálogo digital, carrito de compras, autenticación de usuarios e inventario para Cafetería Ibarra.
+Una página HTML abierta en el navegador no puede hablar directo con PostgreSQL.
+Por eso existe este servidor intermedio: el navegador le manda los datos por
+internet (`fetch`) y el servidor los guarda en la base de datos.
 
-## Integrantes del Equipo
+```
+  Navegador  ──fetch──>  server.js (Node)  ──SQL──>  PostgreSQL
+```
 
-- Acosta Elizalde Ian Jese
-- Castro Salazar Jesús Alejandro
-- Félix Avilés Jonathan Josué
-- Félix Colores Marco Antonio
-- Quintero Román Miguel Ángel
-- Rocha Ibarra Ángel David
+## Requisitos
 
-# 1. Introducción
+1. Node.js (https://nodejs.org) — versión 18 o superior.
+2. PostgreSQL (https://www.postgresql.org/download/).
 
-## Descripción general
-Cafetería Ibarra App es una aplicación móvil diseñada para modernizar el proceso de venta y atención al cliente. El sistema permite consultar el menú en tiempo real, realizar pedidos a domicilio, administrar métodos de pago, gestionar favoritos y consultar historiales de compra.
+## Pasos de instalación
 
-## Audiencia
-- Clientes de Cafetería Ibarra
-- Administradores del negocio
-- Empleados encargados de ventas e inventario
-- Equipo de desarrollo y mantenimiento
+### 1. Crear la base de datos
+En "SQL Shell (psql)":
 
-## Alcance
-El sistema cubre el registro de usuarios, autenticación, catálogo de productos, carrito de compras, gestión de pedidos, métodos de pago, inventario, historial de compras y reportes administrativos.
+```sql
+CREATE DATABASE antique_cafe;
+```
 
-# 2. Resumen del Sistema
+### 2. Cargar las tablas (incluye usuarios, pedidos y pedido_items)
+Desde la carpeta backend, en una terminal:
 
-## Objetivo General
-Desarrollar e implementar una aplicación móvil para optimizar los pedidos a domicilio, mejorar la experiencia del usuario e incrementar la competitividad de Cafetería Ibarra.
+```bash
+psql -U postgres -d antique_cafe -f schema.sql
+```
 
-## Funcionalidades Principales
+### 3. Configurar la conexión
+Abre `server.js` y cambia la contraseña en el bloque `new Pool({...})` por la
+tuya de PostgreSQL. Por defecto usa usuario `postgres` y base `antique_cafe`.
 
-- Catálogo dinámico de productos
-- Búsqueda avanzada de productos
-- Registro e inicio de sesión
-- Carrito de compras
-- Gestión de favoritos
-- Historial de compras
-- Métodos de pago múltiples (tarjeta y efectivo)
-- Gestión de inventario
-- Gestión de clientes
-- Gestión de empleados
-- Reportes y estadísticas
+### 4. Instalar dependencias y arrancar
+Dentro de la carpeta backend:
 
-# 3. Requisitos
+```bash
+npm install
+npm start
+```
 
-## Funcionales
+```
+ Conectado a PostgreSQL
+ Servidor escuchando en http://localhost:3000
+```
 
-- Registro de usuarios
-- Inicio de sesión seguro
-- Consulta de menú e inventario
-- Búsqueda de productos
-- Agregar, editar y eliminar productos del carrito
-- Gestión de pedidos a domicilio
-- Administración de métodos de pago
-- Historial de compras y pedidos
-- Gestión de clientes
-- Gestión de empleados
-- Gestión de inventario
-- Generación de reportes
+> Nota: `npm install` compila el paquete `bcrypt` (usado para encriptar
+> contraseñas). Necesita tener instaladas las herramientas de compilación de
+> tu sistema. En Windows normalmente funciona directo; si diera error, instala
+> "Visual Studio Build Tools" o cambia `bcrypt` por `bcryptjs` en package.json
+> y en server.js (bcryptjs no requiere compilación).
 
-## No Funcionales
+### 5. Usar el sitio
+- Carrito: abre `Antique Cafe.html`, agrega productos y pulsa "Realizar pedido".
+- Login: pulsa "Iniciar sesión" en la barra de navegación, o abre
+  `iniciar-sesion.html`. Puedes registrarte y luego iniciar sesión.
 
-- Interfaz intuitiva
-- Disponibilidad continua
-- Seguridad de datos
-- Escalabilidad
-- Alto rendimiento
+Para ver los datos guardados en PostgreSQL:
+```sql
+SELECT id, nombre, correo, creado_en FROM usuarios;
+SELECT * FROM vista_pedidos;
+```
+(La columna password se ve como un hash largo: así debe ser, está encriptada.)
 
-# 4. Justificación
+## Rutas de la API
 
-La aplicación busca modernizar el proceso de ventas de Cafetería Ibarra mediante herramientas digitales que faciliten la compra de productos, mejoren la administración de pedidos y optimicen el control del inventario.
+| Método | Ruta              | Para qué sirve                  |
+|--------|-------------------|---------------------------------|
+| POST   | /api/registro     | Crear una cuenta nueva          |
+| POST   | /api/login        | Iniciar sesión                  |
+| POST   | /api/pedidos      | Registrar un pedido             |
+| GET    | /api/pedidos      | Listar todos los pedidos        |
+| GET    | /api/pedidos/:id  | Ver el detalle de un pedido     |
 
-# 5. Objetivos Específicos
+## Nota sobre el puerto
+El frontend apunta a `http://localhost:3000`. Si cambias el puerto del servidor,
+actualiza la constante `API_URL` al inicio de `carrito.js` y de `iniciar-sesion.html`.
 
-- Implementar un catálogo actualizado en tiempo real.
-- Desarrollar autenticación segura para usuarios.
-- Integrar un carrito de compras funcional.
-- Diseñar una interfaz intuitiva.
-- Permitir múltiples métodos de pago.
-- Crear un historial de compras y pedidos.
-- Mejorar la gestión administrativa del negocio.
-
-# 6. Módulos del Sistema
-
-## Gestión de Clientes
-Registro, historial, promociones y recompensas.
-
-## Gestión de Empleados
-Control de productividad, horarios y desempeño.
-
-## Gestión de Productos
-Alta, baja y actualización de productos.
-
-## Gestión de Inventario
-Control de existencias y movimientos de productos.
-
-## Gestión de Ventas
-Registro de ventas, descuentos y generación de tickets.
-
-## Gestión de Reportes
-Análisis de ventas, inventario y comportamiento de clientes.
-
-# 7. Casos de Uso
-
-- Cliente realiza pedido.
-- Cliente consulta historial.
-- Cliente gestiona favoritos.
-- Administrador administra productos.
-- Administrador controla inventario.
-- Empleado registra ventas.
-- Administrador genera reportes.
-
-# 8. Base de Datos
-
-Entidades principales:
-
-- Usuarios
-- Clientes
-- Empleados
-- Productos
-- Inventario
-- Pedidos
-- Métodos de Pago
-- Reportes
-
-# 9. Seguridad
-
-- Autenticación de usuarios.
-- Protección de datos personales.
-- Almacenamiento seguro de métodos de pago.
-- Control de acceso por roles.
-
-# 10. Mantenimiento
-
-- Correctivo
-- Preventivo
-- Adaptativo
-
-# 11. Referencias
-
-- Node.js
-- MongoDB
-- Flutter / React Native (según implementación)
-- GitHub
-- Figma
+---
+El inicio de sesión se basó en el proyecto de
+https://github.com/JeseDfi240/ProyectoCafeteria adaptado a la base de datos y
+el estilo de Antique Cafe.
